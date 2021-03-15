@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./../models/usermodels");
 const jwt = require("jsonwebtoken");
-const {promisify}=require('util');
+const { promisify } = require("util");
+const sendEmail = require("./../utilities/email");
 //Generating JWT Token!
 const signToken = (id) => {
   return jwt.sign(
@@ -74,7 +75,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.protect = async (req, res,next) => {
+exports.protect = async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -95,7 +96,7 @@ exports.protect = async (req, res,next) => {
   }
 
   // we use verfy function to verify the token with ourgiven word and promisify to convert it to Promise function because it doesnot return any promise
-  //promisify is a function which comes with UTIL npm pachage to return a promise 
+  //promisify is a function which comes with UTIL npm pachage to return a promise
   const decoded = await promisify(jwt.verify)(
     token,
     "hello-bhayya-kese-ho-aap"
@@ -114,12 +115,12 @@ exports.protect = async (req, res,next) => {
 exports.updatePassword = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("+password");
-    //this will verify the Password 
+    //this will verify the Password
     const correct = await user.verifyPassword(
       req.body.passwordCurrent,
       user.password
-    );  
-    console.log(correct);
+    );
+    // console.log(correct);
     //check id Posted Current Pasword is correctPassword
     if (!correct) {
       res.status(404).json({
@@ -146,3 +147,38 @@ exports.updatePassword = async (req, res) => {
     });
   }
 };
+exports.forgotPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      throw new Error("No User Exist With This Email Id!");
+    }
+
+    const resettoken = user.createPasswordResetToken();
+    //Now we need to save the token and expire date into the MongoDB means update it with....We use Vallidate before save if not used then it will require email address alson
+    await user.save({ validateBeforeSave: false });
+
+    //lets create the URL
+    const url = `${req.protocol}://${req.get("host")}/users/${resettoken}`;
+    const message = `Click on this link to set your Password.${url}`;
+    // console.log( req.body.email,message);
+    await sendEmail({
+      email: req.body.email,
+      subject: "This Password is Valid for only 10 min",
+      message,
+    });
+    res.status(201).json({
+      status: "Success!",
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "Your Email Is Not correct",
+      message: error,
+    });
+  }
+};
+// await sendEmail({
+//   email: req.body.email,
+//   subject: "This Password is Valid for only 10 min",
+//   message,
+// });
