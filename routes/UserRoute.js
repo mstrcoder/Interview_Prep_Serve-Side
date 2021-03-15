@@ -7,5 +7,6 @@ router.post('/signup',Auth.signup);
 router.post('/login',Auth.login);
 router.post('/updatePassword',Auth.protect,Auth.updatePassword);
 router.post('/forgotPassword',Auth.forgotPassword);
+router.patch('/:token',Auth.resetPassword);
 
 module.exports=router;

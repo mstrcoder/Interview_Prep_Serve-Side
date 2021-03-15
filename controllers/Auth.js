@@ -4,6 +4,7 @@ const User = require("./../models/usermodels");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const sendEmail = require("./../utilities/email");
+const crypto = require("crypto");
 //Generating JWT Token!
 const signToken = (id) => {
   return jwt.sign(
@@ -177,8 +178,36 @@ exports.forgotPassword = async (req, res) => {
     });
   }
 };
-// await sendEmail({
-//   email: req.body.email,
-//   subject: "This Password is Valid for only 10 min",
-//   message,
-// });
+exports.resetPassword = async (req, res) => {
+  try {
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+    });
+    if (!user) {
+      throw new Error("Token Not Valid! or Expired!");
+    }
+
+    // update Changed PAssword propety fopr the users
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    //log the user in ,send JWt
+    const token = signToken(user._id);
+    res.status(200).json({
+      status: "Success!",
+      token,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "You cannot change your Password",
+      message: error,
+    });
+  }
+};
