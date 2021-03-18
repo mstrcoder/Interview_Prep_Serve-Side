@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
-const Problem = require("../models/problemmodel");
+// const Problem = require("../models/problemmodel");
+const Topic = require('./../models/topicmodel');
 
 mongoose
   .connect(
@@ -15,18 +16,21 @@ mongoose
     console.log("We are Connected to the Database");
   });
 //Read JSON file
-let problems = JSON.parse(
-  fs.readFileSync(`${__dirname}/problem.json`, "utf-8")
+// let problems = JSON.parse(
+//   fs.readFileSync(`${__dirname}/problem.json`, "utf-8")
+// );
+
+// let val=JSON.stringify(problems);
+// val=val.replace(/\"available languages\":/g, "\"available_languages\":")
+// problems = JSON.parse(val)
+let topics = JSON.parse(
+  fs.readFileSync(`${__dirname}/../topic.json`, "utf-8")
 );
-
-let val=JSON.stringify(problems);
-val=val.replace(/\"available languages\":/g, "\"available_languages\":")
-problems = JSON.parse(val)
-
-console.log(problems);
+console.log(topics);
+// console.log(problems);
 const importData = async () => {
   try {
-    await Problem.create(problems);
+    await Topic.create(topics);
     // await User.create(users,{validateBeforeSave:false});
     // await Review.create(reviews,{validateBeforeSave:false});
     console.log("Data loaded Successfully");
@@ -37,7 +41,7 @@ const importData = async () => {
 
 const DeleteData = async () => {
   try {
-    await Problem.deleteMany();
+    await Topic.deleteMany();
     // await User.deleteMany();
     // await Review.deleteMany();
     console.log("Data Deleted Successfully");

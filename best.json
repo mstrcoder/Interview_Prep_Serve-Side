@@ -1,0 +1,62 @@
+[{
+        "level1": [{
+                "name": "Array",
+                "image": "https://cdn.programiz.com/sites/tutorial2program/files/c-arrays.jpg"
+            },
+            {
+                "name": "Stack",
+                "image": "https://jonlennartaasenden.files.wordpress.com/2019/05/use-case-graphic_full-stack-provisioning.png"
+            },
+            {
+                "name": "Linked-List",
+                "image": "https://cdn.programiz.com/sites/tutorial2program/files/linked-list-concept.png"
+            },
+            {
+                "name": "Queue",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Data_Queue.svg/1200px-Data_Queue.svg.png"
+            }
+
+        ]
+    },
+    {
+        "level2": [{
+                "name": "Binary Search",
+                "image": "https://simplesnippets.tech/wp-content/uploads/2019/06/binary-search-algorithm-in-data-structures.jpg"
+            },
+            {
+                "name": "Strings",
+                "image": "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20191113124516/StringInC.png"
+            },
+            {
+                "name": "Bit Manipulation",
+                "image": "https://c-for-dummies.com/blog/wp-content/uploads/2016/03/figure1-bit_set.png"
+            },
+            {
+                "name": "Two-Pointers",
+                "image": "https://s3.ap-south-1.amazonaws.com/afteracademy-server-uploads/what-is-the-two-pointer-technique-banner-a210899999802dce.png"
+            }
+
+        ]
+    }, {
+        "level3": [{
+                "name": "Hashing",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Adjacencylist_array_of_linkedlists_undirectedgraph.svg/1280px-Adjacencylist_array_of_linkedlists_undirectedgraph.svg.png"
+            },
+            {
+                "name": "Trees",
+                "image": "https://courses.engr.illinois.edu/cs225/sp2019/assets/notes/bst/bsttreetraversal.png"
+            },
+            {
+                "name": "Dynamic Programming",
+                "image": "https://cdn-media-1.freecodecamp.org/images/1*7QbvB25maQRxi7LGYOAfYw.png"
+            },
+            {
+                "name": "Graph",
+                "image": "https://algorist.com/images/figures/graph-data-structures-L.png"
+            }
+
+        ]
+    }, {
+        "levels": ["level1", "level2", "level3"]
+    }
+]
